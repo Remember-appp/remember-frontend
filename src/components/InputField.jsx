@@ -1,8 +1,20 @@
 import React from 'react'
+import P from './P'
 
-function InputField({ classNameDiv, classNameLabel, classNameInput, onChange, value, label = 'Label', placeholder = 'Text', type = 'text'}) {
+function InputField({
+  classNameDiv,
+  classNameLabel,
+  classNameInput,
+  onChange,
+  value,
+  onBlur,
+  label = 'Label',
+  placeholder = 'Text',
+  type = 'text',
+  errorText = '',
+}) {
   return (
-    <div className={`flex flex-col gap-1 ${classNameDiv}`}>
+    <div className={`flex flex-col gap-1 mb-0.5 mt-0.5 ${classNameDiv}`}>
       <label
         className={`text-sm font-medium text-emerald-700 ${classNameLabel}`}
       >
@@ -10,11 +22,17 @@ function InputField({ classNameDiv, classNameLabel, classNameInput, onChange, va
       </label>
       <input
         type={type}
+        onBlur={onBlur}
         placeholder={placeholder}
         className={`border border-emerald-300 focus:border-emerald-500 focus:scale-[1.02] transition-all duration-200 outline-none px-4 py-2 rounded ${classNameInput}`}
         value={value}
         onChange={onChange}
       />
+      <div className='min-h-[1rem]'>
+        {errorText && (
+          <p className="text-red-500 text-sm mt-1 ml-1">{errorText}</p>
+        )}
+      </div>
     </div>
   )
 }

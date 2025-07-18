@@ -14,8 +14,6 @@ export default function NavBar() {
 
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
-      
-      {/*  */}
       <div className="text-3xl font-bold text-emerald-700 hover:text-emerald-800 transition cursor-default">
         Remember
       </div>
@@ -23,7 +21,7 @@ export default function NavBar() {
         <Link
           onClick={handleClick}
           href={isClicked ? '/register' : '/auth'}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded transition-transform duration-200"
+          className={`${isClicked ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-stone-200 hover:bg-neutral-300 border-neutral-400 border text-black'} font-semibold px-4 py-2 rounded transition duration-200`}
         >
           {isClicked ? 'Sign up' : 'Sign in'}
         </Link>

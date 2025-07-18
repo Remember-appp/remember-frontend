@@ -4,7 +4,7 @@ function FormSection({children}) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-stone-100">
       <div className="w-full max-w-md  px-4  mb-30">
-        <div className="flex flex-col gap-4 pt-8 pb-8 pl-6 pr-6 bg-white rounded-xl shadow-md">
+        <div className="flex flex-col pt-8 pb-8 pl-6 pr-6 bg-white rounded-xl shadow-md">
           {children}
         </div>
       </div>
