@@ -1,0 +1,10 @@
+.icon {
+  width: 1.30rem;
+  height: 1.30rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}

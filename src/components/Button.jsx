@@ -13,7 +13,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`rounded px-4 py-2 cursor-pointer ${className}`}
+      className={`rounded px-4 py-2 cursor-pointer font-black ${className}`}
     >
       {text || children}
     </button>

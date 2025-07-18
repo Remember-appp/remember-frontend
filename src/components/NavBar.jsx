@@ -1,22 +1,34 @@
-import React from 'react';
-import Button from './Button';
+'use client'
+import React, { useState } from 'react'
+import Link from 'next/link'
+import Button from './Button'
 
 export default function NavBar() {
+  const [isClicked, setIsClicked] = useState(false)
+  const handleClick = () => setIsClicked(!isClicked)
+
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-green-900 text-white">
-      <div className="text-2xl font-bold">Remember</div>
+    <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
+      
+      {/*  */}
+      <div className="text-3xl font-bold text-emerald-700 hover:text-emerald-800 transition cursor-default">
+        Remember
+      </div>
       <div className="flex items-center space-x-4">
-        <Button
-          text={'Login'}
-          className="bg-green-600 hover:bg-green-700 active:bg-green-600 text-white font-semibold px-4 py-2 rounded transition"
-        />
+        <Link
+          onClick={handleClick}
+          href={isClicked ? '/register' : '/auth'}
+          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded transition-transform duration-200"
+        >
+          {isClicked ? 'Sign up' : 'Sign in'}
+        </Link>
         <button
           aria-label="Profile"
-          className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-semibold hover:bg-green- transition"
+          className="w-12 h-12 rounded-full border-[1px] border-lime-500 text-black flex items-center justify-center font-bold hover:scale-105 transition-transform duration-200"
         >
-          Hi
+          NaN
         </button>
       </div>
     </nav>
-  );
+  )
 }
