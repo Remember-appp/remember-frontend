@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-const dummyReducer = (state = {}) => state;
+import authFormReducer from './slices/authFormSlice'
 
 export const store = configureStore({
   reducer: {
-    dummy: dummyReducer
+    authForm: authFormReducer,
   },
 });

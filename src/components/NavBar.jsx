@@ -1,11 +1,16 @@
 'use client'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import Link from 'next/link'
+import { resetAuthForm } from '@/redux/slices/authFormSlice'
 import Button from './Button'
 
 export default function NavBar() {
+  const dispatch = useDispatch()
   const [isClicked, setIsClicked] = useState(false)
-  const handleClick = () => setIsClicked(!isClicked)
+  const handleClick = () => {
+    setIsClicked(!isClicked)
+  }
 
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
@@ -22,12 +27,7 @@ export default function NavBar() {
         >
           {isClicked ? 'Sign up' : 'Sign in'}
         </Link>
-        <button
-          aria-label="Profile"
-          className="w-12 h-12 rounded-full border-[1px] border-lime-500 text-black flex items-center justify-center font-bold hover:scale-105 transition-transform duration-200"
-        >
-          NaN
-        </button>
+        <Button text={'NaN'} className={'w-12 h-12 rounded-full border-[1px] border-lime-500 text-black flex items-center justify-center font-bold hover:scale-105 transition-transform duration-200'}/>
       </div>
     </nav>
   )
