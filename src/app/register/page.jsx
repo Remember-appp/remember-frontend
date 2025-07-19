@@ -164,7 +164,7 @@ function RegisterPage() {
               'bg-lime-400 hover:bg-lime-500 transition duration-200 m-2'
             }
           />
-          <Link href={'/auth'}>
+          <Link href={'/login'}>
             <P
               text={'Alredy have an account? Sign in'}
               className="text-blue-400 font-bold cursor-pointer hover:underline"

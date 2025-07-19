@@ -10,17 +10,17 @@ export default function NavBar() {
   const dispatch = useDispatch()
   const pathname = usePathname()
 
-  const isSigningUp = pathname === '/register' || pathname === '/welcome'
-  const isSigningIn = pathname === '/auth'
-  let linkHref = ''
-  if (isSigningUp) linkHref = '/auth'
-  if (isSigningIn) linkHref = '/register'
-  
+  const isAuthorizing = pathname === '/register' || pathname === '/welcome' || pathname === '/welcome'
+
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
-      <div className="text-3xl font-bold text-emerald-700 hover:text-emerald-800 transition cursor-default">
-        Remember
-      </div>
+      <Link href={'/welcome'}>
+        {' '}
+        <div className="text-3xl font-bold text-emerald-700 hover:text-emerald-800 transition cursor-default">
+          Remember
+        </div>
+      </Link>
+
       <div className="flex items-center space-x-4">
         <Link
           href={linkHref}
@@ -35,7 +35,7 @@ export default function NavBar() {
           {isSigningIn && 'Sign up'}
         </Link>
         <Button
-          text={'NaN'}
+          text={''}
           className={
             'w-12 h-12 rounded-full border-[1px] border-lime-500 text-black flex items-center justify-center font-bold hover:scale-105 transition-transform duration-200'
           }
