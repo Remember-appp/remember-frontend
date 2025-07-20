@@ -5,8 +5,8 @@ export const validateAuthName = (value) => {
 
   if (value.length > 20) return 'Name must be at most 20 characters'
 
-  if (!/^[A-Za-z0-9_-]+$/.test(value))
-    return 'Name can contain only letters, numbers, and symbols: - , _'
+  if (!/^[\p{L}0-9_-]+$/u.test(value))
+    return 'Name can contain only letters (any language), numbers, "-", and "_"'
 
   return null
 }
