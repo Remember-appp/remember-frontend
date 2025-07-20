@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata = {
-  title: 'Remember',
-  description: 'Remember app',
+  title: 'Remember App',
+  description: 'Remember',
 }
 
 export default function RootLayout({ children }) {
