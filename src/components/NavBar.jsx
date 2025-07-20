@@ -40,12 +40,6 @@ export default function NavBar() {
             Sign in
           </Link>
         )}
-        <Button
-          text={''}
-          className={
-            'w-12 h-12 rounded-full border-[1px] border-lime-500 text-black flex items-center justify-center font-bold hover:scale-105 transition-transform duration-200'
-          }
-        />
       </div>
     </nav>
   )

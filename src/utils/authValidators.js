@@ -1,8 +1,6 @@
 export const validateAuthName = (value) => {
   if (!value) return 'Name is required'
 
-  if (!/^[A-Z]/.test(value)) return 'Name must start with a capital letter'
-
   if (value.length < 4) return 'Name must be at least 4 characters'
 
   if (value.length > 20) return 'Name must be at most 20 characters'

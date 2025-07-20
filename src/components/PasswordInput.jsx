@@ -3,7 +3,6 @@ import styles from '../styles/Icon.module.css'
 import React, { useState } from 'react'
 import { BiShow } from 'react-icons/bi'
 import { BiHide } from 'react-icons/bi'
-import P from './P'
 
 function PasswordInput({
   classNameDiv,
