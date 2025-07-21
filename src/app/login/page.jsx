@@ -23,6 +23,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { use, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {loginUser} from "@/redux/slices/authSlice";
 
 function AuthPage() {
   const dispatch = useDispatch()
@@ -52,6 +53,8 @@ function AuthPage() {
     dispatch(setAuthPasswordError(passwordErr))
 
     if (emailErr || passwordErr) return
+
+    dispatch(loginUser({ email: emailInput, password: passwordInput }))
   }
 
   const handleChange =

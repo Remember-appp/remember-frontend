@@ -7,6 +7,7 @@ import Button from '@/components/Button'
 import FormSection from '@/components/FormSection'
 import InputField from '@/components/InputField'
 import PasswordInput from '@/components/PasswordInput'
+import { registerUser } from '@/redux/slices/authSlice'
 import {
   resetAuthForm,
   selectAuthConfirmPassword,
@@ -78,6 +79,12 @@ function RegisterPage() {
     dispatch(setAuthConfirmPasswordError(confirmPasswordErr))
 
     if (nameErr || emailErr || passwordErr || confirmPasswordErr) return
+    dispatch(registerUser({
+      name: nameInput,
+      email: emailInput,
+      password: passwordInput,
+      password_confirmation: confirmPasswordInput,
+    }))
   }
 
   const handleChange =
