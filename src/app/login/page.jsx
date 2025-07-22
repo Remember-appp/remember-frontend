@@ -21,9 +21,9 @@ import {
 import { validateAuthEmail, validateAuthPassword } from '@/utils/authValidators'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { use, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {loginUser} from "@/redux/slices/authSlice";
+import { signIn } from 'next-auth/react'
 
 function AuthPage() {
   const dispatch = useDispatch()
@@ -39,11 +39,7 @@ function AuthPage() {
     passwordIsTouched: false,
   })
 
-  useEffect(() => {
-    dispatch(resetAuthForm())
-  }, [])
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const emailErr = validateAuthEmail(emailInput)
@@ -54,7 +50,17 @@ function AuthPage() {
 
     if (emailErr || passwordErr) return
 
-    dispatch(loginUser({ email: emailInput, password: passwordInput }))
+    const res = await signIn('credentials', {
+      email: emailInput,
+      password: passwordInput,
+      redirect: false,
+    })
+
+    if (!res.error) {
+      router.push('/')
+    } else {
+      console.log('Error:', res.error)
+    }
   }
 
   const handleChange =
