@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   user: null,
+  token: null,
   status: 'idle',
   error: null,
 }
@@ -13,7 +14,6 @@ export const registerUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await registerAuth(userData)
-      return response
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
@@ -43,6 +43,7 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.user = action.payload
+        state.token = action.payload.token
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed'
@@ -56,6 +57,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.user = action.payload
+        state.token = action.payload.token
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed'
