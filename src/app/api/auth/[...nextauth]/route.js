@@ -3,7 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 
 const authOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -12,6 +11,7 @@ const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('API URL:', process.env.NEXT_PUBLIC_API_BACKEND_URL)
         if (!credentials?.email || !credentials?.password) return null
         try {
           const res = await axios.post(
@@ -21,8 +21,12 @@ const authOptions = {
               password: credentials.password,
             }
           )
-          const user = res.data
+          const user = res.data.user || res.data
           console.log('authorize > user:', user)
+          if (!user || !user.id) {
+            console.log('Invalid user data:', user)
+            return null
+          }
           return user || null
         } catch (error) {
           console.error(`Authorize error: ${error}`)
@@ -33,6 +37,9 @@ const authOptions = {
   ],
   session: {
     strategy: 'jwt',
+  },
+  pages: {
+    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {

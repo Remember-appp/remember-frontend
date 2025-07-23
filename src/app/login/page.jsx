@@ -21,9 +21,10 @@ import {
 import { validateAuthEmail, validateAuthPassword } from '@/utils/authValidators'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from 'next-auth/react'
+import { ok } from 'assert'
 
 function AuthPage() {
   const dispatch = useDispatch()
@@ -38,6 +39,10 @@ function AuthPage() {
     emailIsTouched: false,
     passwordIsTouched: false,
   })
+
+  useEffect(() => {
+    resetAuthForm()
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -56,11 +61,14 @@ function AuthPage() {
       redirect: false,
     })
 
-    if (!res.error) {
-      router.push('/')
-    } else {
-      console.log('Error:', res.error)
+    if (res.error) {
+      console.log(res.error)
+      return null
     }
+
+    if(res.ok) router.push('/profile')
+
+ 
   }
 
   const handleChange =

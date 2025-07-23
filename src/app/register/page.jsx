@@ -85,6 +85,7 @@ function RegisterPage() {
       password: passwordInput,
       password_confirmation: confirmPasswordInput,
     }))
+    
   }
 
   const handleChange =
