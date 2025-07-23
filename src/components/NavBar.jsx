@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import logo from '../components/logos/logo.png'
 import Button from './Button'
+import { signOut } from 'next-auth/react'
 
 export default function NavBar() {
   const dispatch = useDispatch()
@@ -49,6 +50,15 @@ export default function NavBar() {
           >
             Sign up
           </Link>
+        )}
+        {!isAuthorizing && (
+          <Button
+            onClick={() => signOut({ callbackUrl: '/login' })}
+            className={`
+           bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200`}
+          >
+            Sign out
+          </Button>
         )}
       </div>
     </nav>
