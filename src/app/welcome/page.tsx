@@ -1,6 +1,6 @@
 import React from 'react'
 
-function WelcomePage() {
+const WelcomePage: React.FC = () => {
   return (
     <div className="w-full min-h-screen flex justify-center">
       <div className="text-center m-20">

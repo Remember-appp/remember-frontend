@@ -1,6 +1,9 @@
 import React from 'react'
+type FormSectionProps = {
+  children: React.ReactNode
+}
 
-function FormSection({children}) {
+const FormSection: React.FC<FormSectionProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-stone-100">
       <div className="w-full max-w-md  px-4  mb-30">

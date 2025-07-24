@@ -1,8 +1,9 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
+import loginAuth from '@/services/authService/login'
 
-const authOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -10,18 +11,16 @@ const authOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        console.log('API URL:', process.env.NEXT_PUBLIC_API_BACKEND_URL)
-        if (!credentials?.email || !credentials?.password) return null
+      async authorize(
+        credentials: Record<'email' | 'password', string> | undefined,
+        req: any
+      ) {
         try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/api/auth/login`,
-            {
-              email: credentials.email,
-              password: credentials.password,
-            }
-          )
-          const user = res.data.user || res.data
+          const res = await loginAuth({
+            email: credentials.email,
+            password: credentials.password,
+          })
+          const user = res.user || res
           console.log('authorize > user:', user)
           if (!user || !user.id) {
             console.log('Invalid user data:', user)
@@ -37,9 +36,6 @@ const authOptions = {
   ],
   session: {
     strategy: 'jwt',
-  },
-  pages: {
-    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {
