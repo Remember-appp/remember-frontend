@@ -1,9 +1,8 @@
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-
 import AppProvider from '@/providers/AppProvider'
 import NavBar from '@/components/NavBar'
-import { SessionProvider } from 'next-auth/react'
+import React from 'react'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,10 +16,15 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: 'Remember App',
+
   description: 'Remember',
 }
 
-export default function RootLayout({ children }) {
+type RootLayoutProps = {
+  children: React.ReactNode
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body
@@ -34,3 +38,4 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+export default RootLayout

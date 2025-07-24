@@ -1,13 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '@/components/Button'
 import FormSection from '@/components/FormSection'
 import InputField from '@/components/InputField'
 import PasswordInput from '@/components/PasswordInput'
-import { registerUser } from '@/redux/slices/authSlice'
+import { registerUser, selectAuthStatus } from '@/redux/slices/authSlice'
 import {
   resetAuthForm,
   selectAuthConfirmPassword,
@@ -37,9 +37,11 @@ import {
   validateAuthName,
   validateAuthPassword,
 } from '@/utils/authValidators'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
 function RegisterPage() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const router = useRouter()
 
   const emailInput = useSelector(selectAuthEmail)
@@ -50,8 +52,14 @@ function RegisterPage() {
   const passwordInputError = useSelector(selectAuthPasswordError)
   const nameInputError = useSelector(selectAuthNameError)
   const confirmPasswordInputError = useSelector(selectAuthConfirmPasswordError)
+  const status = useSelector(selectAuthStatus)
 
-  const [isTouched, setIsTouched] = useState({
+  const [isTouched, setIsTouched] = useState<{
+    nameIsTouched: boolean
+    emailIsTouched: boolean
+    passwordIsTouched: boolean
+    confirmPasswordIsTouched: boolean
+  }>({
     nameIsTouched: false,
     emailIsTouched: false,
     passwordIsTouched: false,
@@ -62,7 +70,7 @@ function RegisterPage() {
     dispatch(resetAuthForm())
   }, [])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const nameErr = validateAuthName(nameInput)
@@ -79,22 +87,34 @@ function RegisterPage() {
     dispatch(setAuthConfirmPasswordError(confirmPasswordErr))
 
     if (nameErr || emailErr || passwordErr || confirmPasswordErr) return
-    dispatch(registerUser({
-      name: nameInput,
-      email: emailInput,
-      password: passwordInput,
-      password_confirmation: confirmPasswordInput,
-    }))
-    
+    dispatch(
+      registerUser({
+        name: nameInput,
+        email: emailInput,
+        password: passwordInput,
+        password_confirmation: confirmPasswordInput,
+      })
+    )
+    if (status === 'succeeded') {
+      router.push('/login')
+    }
   }
 
+  type StringActionCreator = PayloadActionCreator<string>
+  type ValidationFn = (value: string) => string
   const handleChange =
-    (actionCreatorInput, actionCreatorError, actionCreatorValidation) =>
-    (e) => {
-      dispatch(actionCreatorInput(e.target.value))
-      dispatch(actionCreatorError(actionCreatorValidation(e.target.value)))
+    (
+      actionCreatorInput: StringActionCreator,
+      actionCreatorError: StringActionCreator,
+      actionCreatorValidation: ValidationFn
+    ) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      dispatch(actionCreatorInput(value))
+      dispatch(actionCreatorError(actionCreatorValidation(value)))
     }
-  const handleConfirmPasswordChange = (e) => {
+
+  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     dispatch(setAuthConfirmPassword(value))
     dispatch(

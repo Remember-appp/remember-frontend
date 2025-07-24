@@ -1,6 +1,8 @@
 'use client'
 
-export default function Home() {
+import React from "react";
+
+export const Home: React.FC = () => {
   return (
     <div className="w-full min-h-screen flex justify-center">
       <div className="text-center m-20">

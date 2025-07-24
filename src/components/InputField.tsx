@@ -1,7 +1,20 @@
 import React from 'react'
 import P from './P'
 
-function InputField({
+type InputFieldProps = {
+  classNameDiv?: string
+  classNameLabel?: string
+  classNameInput?: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value: string
+  onBlur: () => void
+  label?: string
+  placeholder?: string
+  type?: string
+  errorText?: string
+}
+
+const InputField: React.FC<InputFieldProps> = ({
   classNameDiv,
   classNameLabel,
   classNameInput,
@@ -12,7 +25,7 @@ function InputField({
   placeholder = 'Text',
   type = 'text',
   errorText = '',
-}) {
+}) => {
   return (
     <div className={`flex flex-col gap-1 mb-0.5 mt-0.5 ${classNameDiv}`}>
       <label
@@ -28,7 +41,7 @@ function InputField({
         value={value}
         onChange={onChange}
       />
-      <div className='min-h-[1rem]'>
+      <div className="min-h-[1rem]">
         {errorText && (
           <p className="text-red-500 text-sm mt-1 ml-1">{errorText}</p>
         )}

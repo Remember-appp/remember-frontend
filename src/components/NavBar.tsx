@@ -8,7 +8,7 @@ import logo from '../components/logos/logo.png'
 import Button from './Button'
 import { signOut } from 'next-auth/react'
 
-export default function NavBar() {
+const NavBar: React.FC = () => {
   const dispatch = useDispatch()
   const pathname = usePathname()
 
@@ -64,3 +64,5 @@ export default function NavBar() {
     </nav>
   )
 }
+
+export default NavBar

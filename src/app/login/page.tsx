@@ -1,6 +1,7 @@
 'use client'
 
 import Button from '@/components/Button'
+import type { FormEvent, ChangeEvent } from 'react'
 import FormSection from '@/components/FormSection'
 import InputField from '@/components/InputField'
 import P from '@/components/P'
@@ -24,7 +25,6 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from 'next-auth/react'
-import { ok } from 'assert'
 
 function AuthPage() {
   const dispatch = useDispatch()
@@ -35,7 +35,10 @@ function AuthPage() {
   const emailInputError = useSelector(selectAuthEmailError)
   const passwordInputError = useSelector(selectAuthPasswordError)
 
-  const [isTouched, setIsTouched] = useState({
+  const [isTouched, setIsTouched] = useState<{
+    emailIsTouched: boolean
+    passwordIsTouched: boolean
+  }>({
     emailIsTouched: false,
     passwordIsTouched: false,
   })
@@ -44,7 +47,7 @@ function AuthPage() {
     resetAuthForm()
   }, [])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const emailErr = validateAuthEmail(emailInput)
@@ -66,14 +69,16 @@ function AuthPage() {
       return null
     }
 
-    if(res.ok) router.push('/profile')
-
- 
+    if (res.ok) router.push('/profile')
   }
 
   const handleChange =
-    (actionCreatorInput, actionCreatorError, actionCreatorValidation) =>
-    (e) => {
+    (
+      actionCreatorInput: (value: string) => any,
+      actionCreatorError: (value: string) => any,
+      actionCreatorValidation: (value: string) => string
+    ) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
       dispatch(actionCreatorInput(e.target.value))
       dispatch(actionCreatorError(actionCreatorValidation(e.target.value)))
     }

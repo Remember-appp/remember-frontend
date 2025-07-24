@@ -1,13 +1,23 @@
 import React from 'react'
 
-export default function Button({
+type ButtonProps = {
+  children?: React.ReactNode
+  text?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  disabled?: boolean
+  type?: 'button' | 'submit'
+  className?: string
+}
+
+
+ const Button: React.FC<ButtonProps> = ({
   children,
   text,
   onClick,
   disabled = false,
   type = 'button',
   className,
-}) {
+}) => {
   return (
     <button
       type={type}
@@ -18,4 +28,6 @@ export default function Button({
       {text || children}
     </button>
   )
-}
+ }
+
+ export default Button
