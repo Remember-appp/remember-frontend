@@ -1,6 +1,5 @@
-import loginAuth from '@/services/authService/login'
 import registerAuth from '@/services/authService/register'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
 type authState = {
@@ -9,6 +8,8 @@ type authState = {
   status: string
   error: string | boolean | null
 }
+
+type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState: authState = {
   user: null,
@@ -27,7 +28,7 @@ type YourUserDataType = {
 export const registerUser = createAsyncThunk<
   string,
   YourUserDataType,
-  { rejectValue: string }
+  { rejectValue: string | { message: string } }
 >('auth/registerUser', async (userData, thunkAPI) => {
   try {
     const response = await registerAuth(userData)
@@ -39,7 +40,11 @@ export const registerUser = createAsyncThunk<
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthStatus: (state, action: PayloadAction<AuthStatus> ) => {
+      state.status = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -51,10 +56,16 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.payload ?? 'Unknown error'
+        const payload = action.payload
+        state.error =
+          typeof payload === 'string'
+            ? payload
+            : payload?.message || 'Unknown error'
       })
   },
 })
+
+export const { setAuthStatus } = authSlice.actions
 
 export const selectAuthStatus = (state: RootState) => state.auth.status
 export const selectAuthError = (state: RootState) => state.auth.error
