@@ -7,7 +7,12 @@ import Button from '@/components/Button'
 import FormSection from '@/components/FormSection'
 import InputField from '@/components/InputField'
 import PasswordInput from '@/components/PasswordInput'
-import { registerUser, selectAuthStatus } from '@/redux/slices/authSlice'
+import {
+  registerUser,
+  selectAuthError,
+  selectAuthStatus,
+  setAuthStatus,
+} from '@/redux/slices/authSlice'
 import {
   resetAuthForm,
   selectAuthConfirmPassword,
@@ -39,6 +44,8 @@ import {
 } from '@/utils/authValidators'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { PayloadActionCreator } from '@reduxjs/toolkit'
+import Error from '@/components/Error'
+import { stat } from 'fs'
 
 function RegisterPage() {
   const dispatch = useAppDispatch()
@@ -53,6 +60,9 @@ function RegisterPage() {
   const nameInputError = useSelector(selectAuthNameError)
   const confirmPasswordInputError = useSelector(selectAuthConfirmPasswordError)
   const status = useSelector(selectAuthStatus)
+  const errorAuth = useSelector(selectAuthError)
+
+  const [mounted, setMounted] = useState(false)
 
   const [isTouched, setIsTouched] = useState<{
     nameIsTouched: boolean
@@ -67,10 +77,12 @@ function RegisterPage() {
   })
 
   useEffect(() => {
+    setMounted(true)
+    dispatch(setAuthStatus('idle'))
     dispatch(resetAuthForm())
   }, [])
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const nameErr = validateAuthName(nameInput)
@@ -87,16 +99,19 @@ function RegisterPage() {
     dispatch(setAuthConfirmPasswordError(confirmPasswordErr))
 
     if (nameErr || emailErr || passwordErr || confirmPasswordErr) return
-    dispatch(
-      registerUser({
-        name: nameInput,
-        email: emailInput,
-        password: passwordInput,
-        password_confirmation: confirmPasswordInput,
-      })
-    )
-    if (status === 'succeeded') {
+    try {
+      await dispatch(
+        registerUser({
+          name: nameInput,
+          email: emailInput,
+          password: passwordInput,
+          password_confirmation: confirmPasswordInput,
+        })
+      ).unwrap()
+
       router.push('/login')
+    } catch (err) {
+      console.log('Registration failed:', err.message)
     }
   }
 
@@ -198,6 +213,7 @@ function RegisterPage() {
               className="text-blue-400 font-bold cursor-pointer hover:underline"
             />
           </Link>
+          {mounted && status === 'failed' && errorAuth && <Error error={String(errorAuth)} />}
         </FormSection>
       </form>
     </div>
