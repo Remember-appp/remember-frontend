@@ -1,14 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
-
 import { createSlice } from '@reduxjs/toolkit'
-
-type authFormState = {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
+import { RootState } from '../store'
+import { authFormState } from '@/types/authTypes'
 
 const initialState: authFormState = {
   name: '',

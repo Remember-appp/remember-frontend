@@ -1,16 +1,7 @@
+import { ButtonProps } from '@/types/componentsTypes'
 import React from 'react'
 
-type ButtonProps = {
-  children?: React.ReactNode
-  text?: string
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
-  disabled?: boolean
-  type?: 'button' | 'submit'
-  className?: string
-}
-
-
- const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   children,
   text,
   onClick,
@@ -28,6 +19,6 @@ type ButtonProps = {
       {text || children}
     </button>
   )
- }
+}
 
- export default Button
+export default Button

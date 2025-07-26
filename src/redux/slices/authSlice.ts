@@ -1,15 +1,7 @@
 import registerAuth from '@/services/authService/register'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-
-type authState = {
-  user: string | boolean | null
-  token: string | boolean | null
-  status: string
-  error: string | boolean | null
-}
-
-type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
+import { authState, AuthStatus, UserDataType } from '@/types/authTypes'
 
 const initialState: authState = {
   user: null,
@@ -18,16 +10,9 @@ const initialState: authState = {
   error: null,
 }
 
-type YourUserDataType = {
-  name: string
-  email: string
-  password: string
-  password_confirmation: string
-}
-
 export const registerUser = createAsyncThunk<
   string,
-  YourUserDataType,
+  UserDataType,
   { rejectValue: string | { message: string } }
 >('auth/registerUser', async (userData, thunkAPI) => {
   try {
@@ -41,8 +26,11 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuthStatus: (state, action: PayloadAction<AuthStatus> ) => {
+    setAuthStatus: (state, action: PayloadAction<AuthStatus>) => {
       state.status = action.payload
+    },
+    setAuthError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -65,7 +53,7 @@ const authSlice = createSlice({
   },
 })
 
-export const { setAuthStatus } = authSlice.actions
+export const { setAuthStatus, setAuthError } = authSlice.actions
 
 export const selectAuthStatus = (state: RootState) => state.auth.status
 export const selectAuthError = (state: RootState) => state.auth.error

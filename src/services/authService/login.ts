@@ -1,9 +1,5 @@
+import { LoginData } from '@/types/authTypes'
 import axios from 'axios'
-
-type LoginData = {
-  email: string
-  password: string
-}
 
 async function loginAuth(data: LoginData) {
   const res = await axios.post(

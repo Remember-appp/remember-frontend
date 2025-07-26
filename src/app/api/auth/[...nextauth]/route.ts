@@ -21,15 +21,14 @@ const authOptions: NextAuthOptions = {
             password: credentials.password,
           })
           const user = res.user || res
-          console.log('authorize > user:', user)
           if (!user || !user.id) {
             console.log('Invalid user data:', user)
             return null
           }
           return user || null
         } catch (error) {
-          console.error(`Authorize error: ${error}`)
-          return null
+          const message = error?.response?.data?.message
+          throw new Error(message)
         }
       },
     }),

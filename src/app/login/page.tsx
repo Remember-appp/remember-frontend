@@ -24,27 +24,32 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { LoginIsTouched } from '@/types/authTypes'
+import { selectAuthError, setAuthError } from '@/redux/slices/authSlice'
+import Error from '@/components/Error'
 
 function AuthPage() {
   const dispatch = useDispatch()
   const router = useRouter()
+  const { data: session, status } = useSession()
 
   const emailInput = useSelector(selectAuthEmail)
   const passwordInput = useSelector(selectAuthPassword)
   const emailInputError = useSelector(selectAuthEmailError)
   const passwordInputError = useSelector(selectAuthPasswordError)
+  const error = useSelector(selectAuthError)
 
-  const [isTouched, setIsTouched] = useState<{
-    emailIsTouched: boolean
-    passwordIsTouched: boolean
-  }>({
+  const [mounted, setMounted] = useState(false)
+
+  const [isTouched, setIsTouched] = useState<LoginIsTouched>({
     emailIsTouched: false,
     passwordIsTouched: false,
   })
 
   useEffect(() => {
-    resetAuthForm()
+    setMounted(true)
+    dispatch(setAuthError(null))
   }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -64,12 +69,15 @@ function AuthPage() {
       redirect: false,
     })
 
-    if (res.error) {
+    if (!res.ok && res?.error) {
       console.log(res.error)
-      return null
+      dispatch(setAuthError(res.error))
     }
 
-    if (res.ok) router.push('/profile')
+    if (res.ok) {
+      router.push('/profile')
+      dispatch(resetAuthForm())
+    }
   }
 
   const handleChange =
@@ -116,6 +124,7 @@ function AuthPage() {
             }
             errorText={isTouched.passwordIsTouched ? passwordInputError : ''}
           />
+          {mounted && error && <Error error={String(error)} classNameWrapper='mb-2' />}
           <Button
             type="submit"
             text={'Sign in'}

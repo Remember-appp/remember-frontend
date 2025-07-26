@@ -11,6 +11,7 @@ import {
   registerUser,
   selectAuthError,
   selectAuthStatus,
+  setAuthError,
   setAuthStatus,
 } from '@/redux/slices/authSlice'
 import {
@@ -45,7 +46,7 @@ import {
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { PayloadActionCreator } from '@reduxjs/toolkit'
 import Error from '@/components/Error'
-import { stat } from 'fs'
+import { RegisterIsTouched } from '@/types/authTypes'
 
 function RegisterPage() {
   const dispatch = useAppDispatch()
@@ -64,12 +65,7 @@ function RegisterPage() {
 
   const [mounted, setMounted] = useState(false)
 
-  const [isTouched, setIsTouched] = useState<{
-    nameIsTouched: boolean
-    emailIsTouched: boolean
-    passwordIsTouched: boolean
-    confirmPasswordIsTouched: boolean
-  }>({
+  const [isTouched, setIsTouched] = useState<RegisterIsTouched>({
     nameIsTouched: false,
     emailIsTouched: false,
     passwordIsTouched: false,
@@ -79,11 +75,20 @@ function RegisterPage() {
   useEffect(() => {
     setMounted(true)
     dispatch(setAuthStatus('idle'))
+    dispatch(setAuthError(null))
     dispatch(resetAuthForm())
   }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    setIsTouched((prev) => ({
+      ...prev,
+      nameIsTouched: true,
+      emailIsTouched: true,
+      passwordIsTouched: true,
+      confirmPasswordIsTouched: true,
+    }))
 
     const nameErr = validateAuthName(nameInput)
     const emailErr = validateAuthEmail(emailInput)
@@ -115,13 +120,11 @@ function RegisterPage() {
     }
   }
 
-  type StringActionCreator = PayloadActionCreator<string>
-  type ValidationFn = (value: string) => string
   const handleChange =
     (
-      actionCreatorInput: StringActionCreator,
-      actionCreatorError: StringActionCreator,
-      actionCreatorValidation: ValidationFn
+      actionCreatorInput: PayloadActionCreator<string>,
+      actionCreatorError: PayloadActionCreator<string>,
+      actionCreatorValidation: (value: string) => string
     ) =>
     (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
@@ -200,6 +203,9 @@ function RegisterPage() {
                 : ''
             }
           />
+            {mounted && status === 'failed' && errorAuth && (
+              <Error error={String(errorAuth)} classNameWrapper='mb-2'/>
+            )}
           <Button
             text={'Sign up'}
             type="submit"
@@ -213,7 +219,6 @@ function RegisterPage() {
               className="text-blue-400 font-bold cursor-pointer hover:underline"
             />
           </Link>
-          {mounted && status === 'failed' && errorAuth && <Error error={String(errorAuth)} />}
         </FormSection>
       </form>
     </div>
