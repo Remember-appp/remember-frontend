@@ -5,7 +5,7 @@ import React from 'react'
 
 const ProfilePage: React.FC = () => {
   const router = useRouter()
-  const {data: session, status} = useSession()
+  const {data: session} = useSession()
 
   return (
     <div >

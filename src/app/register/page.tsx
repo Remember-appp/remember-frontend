@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Button from '@/components/Button'
 import FormSection from '@/components/FormSection'
 import InputField from '@/components/InputField'
@@ -215,7 +215,7 @@ function RegisterPage() {
           />
           <Link href={'/login'}>
             <P
-              text={'Alredy have an account? Sign in'}
+              text={'Already have an account? Sign in'}
               className="text-blue-400 font-bold cursor-pointer hover:underline"
             />
           </Link>

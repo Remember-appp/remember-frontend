@@ -32,8 +32,6 @@ import Error from '@/components/Error'
 function AuthPage() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { data: session, status } = useSession()
-
   const emailInput = useSelector(selectAuthEmail)
   const passwordInput = useSelector(selectAuthPassword)
   const emailInputError = useSelector(selectAuthEmailError)
