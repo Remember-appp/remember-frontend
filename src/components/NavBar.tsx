@@ -1,19 +1,16 @@
 'use client'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import logo from '../components/logos/logo.png'
 import Button from './Button'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 const NavBar: React.FC = () => {
-  const dispatch = useDispatch()
-  const pathname = usePathname()
+  const {data: session} = useSession()
 
-  const isAuthorizing =
-    pathname === '/register' || pathname === '/login' || pathname === '/welcome'
+  const isAuthorizing = !session
+    
 
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">

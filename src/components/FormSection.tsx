@@ -1,7 +1,5 @@
+import { FormSectionProps } from '@/types/componentsTypes'
 import React from 'react'
-type FormSectionProps = {
-  children: React.ReactNode
-}
 
 const FormSection: React.FC<FormSectionProps> = ({ children }) => {
   return (

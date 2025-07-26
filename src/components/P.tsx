@@ -1,10 +1,5 @@
+import { PProps } from '@/types/componentsTypes'
 import React from 'react'
-
-type PProps = {
-  children?: React.ReactNode
-  text?: string
-  className?: string
-}
 
 const P: React.FC<PProps> = ({ children, text, className = '' }) => {
   return (

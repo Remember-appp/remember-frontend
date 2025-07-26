@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-
-type authValidationState = {
-  authNameError: string | null
-  authEmailError: string | null
-  authPasswordError: string | null
-  authConfirmPasswordError: string | null
-}
+import { authValidationState } from '@/types/authTypes'
 
 const initialState: authValidationState = {
   authNameError: null,

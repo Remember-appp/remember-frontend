@@ -1,21 +1,9 @@
 'use client'
+import { PasswordInputProps } from '@/types/componentsTypes'
 import styles from '../styles/Icon.module.css'
 import React, { useState } from 'react'
 import { BiShow } from 'react-icons/bi'
 import { BiHide } from 'react-icons/bi'
-
-type PasswordInputProps = {
-  classNameDiv?: string
-  classNameLabel?: string
-  classNameInput?: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  value?: string
-  onBlur: () => void
-  label?: string
-  placeholder?: string
-  hideBtn?: boolean
-  errorText?: string
-}
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
   classNameDiv,

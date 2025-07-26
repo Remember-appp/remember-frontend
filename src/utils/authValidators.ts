@@ -1,5 +1,4 @@
-
-type ValidationResult = string | null
+import { ValidationResult } from '@/types/authTypes'
 
 export const validateAuthName = (value: string): ValidationResult => {
   if (!value) return 'Name is required'

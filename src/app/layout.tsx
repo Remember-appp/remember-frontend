@@ -3,6 +3,7 @@ import './globals.css'
 import AppProvider from '@/providers/AppProvider'
 import NavBar from '@/components/NavBar'
 import React from 'react'
+import { RootLayoutProps } from '@/types/appTypes'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,10 +19,6 @@ export const metadata = {
   title: 'Remember App',
 
   description: 'Remember',
-}
-
-type RootLayoutProps = {
-  children: React.ReactNode
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {

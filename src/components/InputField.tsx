@@ -1,18 +1,6 @@
 import React from 'react'
 import P from './P'
-
-type InputFieldProps = {
-  classNameDiv?: string
-  classNameLabel?: string
-  classNameInput?: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  value: string
-  onBlur: () => void
-  label?: string
-  placeholder?: string
-  type?: string
-  errorText?: string
-}
+import { InputFieldProps } from '@/types/componentsTypes'
 
 const InputField: React.FC<InputFieldProps> = ({
   classNameDiv,
