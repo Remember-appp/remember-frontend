@@ -16,20 +16,24 @@ export type PasswordInputProps = {
 export type PProps = {
   children?: React.ReactNode
   text?: string
+  label?: string
   className?: string
+  classNameText?: string
+  classNameLabel?: string
 }
 
 export type InputFieldProps = {
   classNameDiv?: string
   classNameLabel?: string
   classNameInput?: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  value: string
-  onBlur: () => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string
+  onBlur?: () => void
   label?: string
   placeholder?: string
   type?: string
   errorText?: string
+  errorTextAllowed?: boolean
 }
 
 export type FormSectionProps = {
@@ -48,4 +52,12 @@ export type ButtonProps = {
   disabled?: boolean
   type?: 'button' | 'submit'
   className?: string
+}
+
+export type ProfileCardProps = {
+  children: React.ReactNode
+}
+
+export type ProfileInfoProps = {
+  children: React.ReactNode
 }

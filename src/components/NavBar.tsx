@@ -5,12 +5,19 @@ import Image from 'next/image'
 import logo from '../components/logos/logo.png'
 import Button from './Button'
 import { signOut, useSession } from 'next-auth/react'
+import { useDispatch } from 'react-redux'
+import { clearUserInfo } from '@/redux/slices/userInfoSlice'
 
 const NavBar: React.FC = () => {
-  const {data: session} = useSession()
+  const dispatch = useDispatch()
+  const { data: session } = useSession()
 
   const isAuthorizing = !session
-    
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/login' })
+    dispatch(clearUserInfo())
+  }
 
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
@@ -50,7 +57,7 @@ const NavBar: React.FC = () => {
         )}
         {!isAuthorizing && (
           <Button
-            onClick={() => signOut({ callbackUrl: '/login' })}
+            onClick={handleSignOut}
             className={`
            bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200`}
           >
