@@ -1,4 +1,3 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
 
 export type authFormState = {
   name: string

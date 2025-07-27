@@ -1,5 +1,4 @@
 import React from 'react'
-import P from './P'
 import { InputFieldProps } from '@/types/componentsTypes'
 
 const InputField: React.FC<InputFieldProps> = ({
