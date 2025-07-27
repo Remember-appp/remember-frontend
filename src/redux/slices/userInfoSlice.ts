@@ -1,15 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-
-type UserInfoState = {
-  id: number | null
-  name: string | null
-  email: string | null
-  email_verified_at: string | null
-  created_at: string | null
-  updated_at: string | null
-  loaded: boolean
-}
+import { UserInfoState } from '@/types/authTypes'
 
 const initialState: UserInfoState = {
   id: null,

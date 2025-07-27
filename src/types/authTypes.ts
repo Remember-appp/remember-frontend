@@ -19,6 +19,16 @@ export type authValidationState = {
   authConfirmPasswordError: string | null
 }
 
+export type UserInfoState = {
+  id: number | null
+  name: string | null
+  email: string | null
+  email_verified_at: string | null
+  created_at: string | null
+  updated_at: string | null
+  loaded: boolean
+}
+
 export type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type UserDataType = {

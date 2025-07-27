@@ -52,3 +52,11 @@ export type ButtonProps = {
   type?: 'button' | 'submit'
   className?: string
 }
+
+export type ProfileCardProps = {
+  children: React.ReactNode
+}
+
+export type ProfileInfoProps = {
+  children: React.ReactNode
+}

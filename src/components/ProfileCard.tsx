@@ -1,6 +1,4 @@
-type ProfileCardProps = {
-  children: React.ReactNode
-}
+import { ProfileCardProps } from "@/types/componentsTypes"
 
 const ProfileCard = ({ children }: ProfileCardProps) => {
   return (

@@ -1,7 +1,4 @@
-
-type ProfileInfoProps = {
-  children: React.ReactNode
-}
+import { ProfileInfoProps } from "@/types/componentsTypes"
 
 const ProfileInfo = ({ children }: ProfileInfoProps) => {
   return (
