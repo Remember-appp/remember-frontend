@@ -8,8 +8,6 @@ export type authFormState = {
 }
 
 export type authState = {
-  user: string | boolean | null
-  token: string | boolean | null
   status: string
   error: string | boolean | null
 }

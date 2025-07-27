@@ -4,8 +4,6 @@ import { RootState } from '../store'
 import { authState, AuthStatus, UserDataType } from '@/types/authTypes'
 
 const initialState: authState = {
-  user: null,
-  token: null,
   status: 'idle',
   error: null,
 }
