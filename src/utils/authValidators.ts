@@ -38,3 +38,20 @@ export const validateAuthConfirmPassword = (
   if (password !== confirmPassword) return 'Passwords do not match'
   return null
 }
+
+export const validateAuthNameEditMode = (value: string): ValidationResult => {
+  if (value.length === 0) return null
+  if (value.length < 4) return 'Name must be at least 4 characters'
+  if (value.length > 20) return 'Name must be at most 20 characters'
+  if (!/^[\p{L}0-9_-]+$/u.test(value)) {
+    return 'Name can contain only letters (any language), numbers, "-", and "_"'
+  }
+  return null
+}
+
+export const validateAuthEmailEditMode = (value: string): ValidationResult => {
+  if (value.length === 0 ) return null
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(value)) return 'Invalid email address'
+  return null
+}

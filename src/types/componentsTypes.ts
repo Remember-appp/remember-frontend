@@ -31,7 +31,7 @@ export type InputFieldProps = {
   label?: string
   placeholder?: string
   type?: string
-  errorText?: string
+  errorText?: string | null
   errorTextAllowed?: boolean
 }
 
@@ -59,4 +59,8 @@ export type ProfileCardProps = {
 
 export type ProfileInfoProps = {
   children: React.ReactNode
+}
+
+export type HeaderTextProps = {
+  text: string
 }

@@ -63,3 +63,4 @@ export type LoginIsTouched = {
   emailIsTouched: boolean
   passwordIsTouched: boolean
 }
+
