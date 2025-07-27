@@ -10,14 +10,18 @@ import { clearUserInfo } from '@/redux/slices/userInfoSlice'
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
-  const isAuthorizing = !session
+  const isAnauthenticated = status === 'unauthenticated' 
+  const isAuthenticated = status === 'authenticated'
+  const isLoading = status === 'loading'
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/login' })
     dispatch(clearUserInfo())
   }
+
+  if (status === 'loading') return null
 
   return (
     <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
@@ -37,7 +41,7 @@ const NavBar: React.FC = () => {
       </Link>
 
       <div className="flex items-center space-x-4">
-        {isAuthorizing && (
+        {isAnauthenticated && (
           <Link
             href={'/login'}
             className={`
@@ -46,7 +50,7 @@ const NavBar: React.FC = () => {
             Sign in
           </Link>
         )}
-        {isAuthorizing && (
+        {isAnauthenticated && (
           <Link
             href={'/register'}
             className={`
@@ -55,7 +59,7 @@ const NavBar: React.FC = () => {
             Sign up
           </Link>
         )}
-        {!isAuthorizing && (
+        { isAuthenticated && (
           <Button
             onClick={handleSignOut}
             className={`
