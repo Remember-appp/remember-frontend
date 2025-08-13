@@ -26,6 +26,7 @@ export type UserInfoState = {
   created_at: string | null
   updated_at: string | null
   loaded: boolean
+  token: null
 }
 
 export type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'

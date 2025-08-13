@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import logo from '../components/logos/logo.png'
@@ -11,21 +11,19 @@ import { clearUserInfo } from '@/redux/slices/userInfoSlice'
 const NavBar: React.FC = () => {
   const dispatch = useDispatch()
   const { data: session, status } = useSession()
-
-  const isAnauthenticated = status === 'unauthenticated' 
+  const [isMounted, setIsMounted] = useState(false)
+  const isAnauthenticated = status === 'unauthenticated'
   const isAuthenticated = status === 'authenticated'
-  const isLoading = status === 'loading'
+  const appLink = isAuthenticated ? '/' : '/welcome'
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/login' })
     dispatch(clearUserInfo())
   }
 
-  if (status === 'loading') return null
-
   return (
-    <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)]">
-      <Link href={'/welcome'}>
+    <nav className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)] animate-fade-down animate-once animate-duration-300">
+      <Link href={appLink}>
         <div className="flex space-x-2 items-center transition duration-300">
           <Image
             src={logo}
@@ -45,7 +43,7 @@ const NavBar: React.FC = () => {
           <Link
             href={'/login'}
             className={`
-           bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200`}
+           bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200 animate-fade-down sm:animate-flip-down animate-duration-300`}
           >
             Sign in
           </Link>
@@ -54,16 +52,16 @@ const NavBar: React.FC = () => {
           <Link
             href={'/register'}
             className={`
-            bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded transition duration-200`}
+            bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded transition duration-200 animate-fade-down sm:animate-flip-down animate-duration-300`}
           >
             Sign up
           </Link>
         )}
-        { isAuthenticated && (
+        {isAuthenticated && (
           <Button
             onClick={handleSignOut}
             className={`
-           bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200`}
+           bg-stone-200 hover:bg-neutral-300 text-black font-semibold px-4 py-2 rounded transition duration-200 animate-fade-down sm:animate-flip-down animate-duration-300`}
           >
             Sign out
           </Button>

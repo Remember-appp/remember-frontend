@@ -24,7 +24,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { LoginIsTouched } from '@/types/authTypes'
 import { selectAuthError, setAuthError } from '@/redux/slices/authSlice'
 import Error from '@/components/Error'
@@ -44,11 +44,12 @@ function AuthPage() {
     emailIsTouched: false,
     passwordIsTouched: false,
   })
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     dispatch(setAuthError(null))
-  }, [])
+  }, [dispatch])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -71,8 +72,8 @@ function AuthPage() {
       console.log(res.error)
       dispatch(setAuthError(res.error))
     }
-
     if (res.ok) {
+      setIsLoggedIn(true)
       router.push('/profile')
       dispatch(resetAuthForm())
     }
@@ -91,7 +92,10 @@ function AuthPage() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className={`${isLoggedIn && 'animate-jump-out animate-once'}`}
+      >
         <FormSection>
           <InputField
             label="Email"
@@ -122,7 +126,9 @@ function AuthPage() {
             }
             errorText={isTouched.passwordIsTouched ? passwordInputError : ''}
           />
-          {mounted && error && <Error error={String(error)} classNameWrapper='mb-2' />}
+          {mounted && error && (
+            <Error error={String(error)} classNameWrapper="mb-2" />
+          )}
           <Button
             type="submit"
             text={'Sign in'}
@@ -133,7 +139,7 @@ function AuthPage() {
           <Link href="/register">
             <P
               text={"Don't have an account? Sign up"}
-              className="text-blue-400 font-bold cursor-pointer hover:underline"
+              className="text-blue-400 font-bold cursor-pointer hover:underline mt-2"
             />
           </Link>
         </FormSection>

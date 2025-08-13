@@ -10,6 +10,7 @@ const initialState: UserInfoState = {
   created_at: null,
   updated_at: null,
   loaded: false,
+  token: null
 }
 
 const userInfoSlice = createSlice({
@@ -19,6 +20,7 @@ const userInfoSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<Partial<UserInfoState>>) => {
       Object.assign(state, action.payload)
       state.loaded = true
+      state.token = null
     },
     clearUserInfo: (state) => {
       state.id = null
