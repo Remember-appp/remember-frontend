@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ArrowDownToLine } from 'lucide-react';
+import { ArrowDownToLine } from 'lucide-react'
 import Button from '@/components/Button'
 import InputField from '@/components/InputField'
 import {
@@ -17,11 +17,16 @@ import {
   setAuthEmailError,
   setAuthNameError,
 } from '@/redux/slices/authValidationSlice'
-import { EditingModeProps, ProfileEditingModeIsTouched } from '@/types/profileTypes'
+import {
+  EditingModeProps,
+  ProfileEditingModeIsTouched,
+} from '@/types/profileTypes'
 import {
   validateAuthEmailEditMode,
   validateAuthNameEditMode,
 } from '@/utils/authValidators'
+import { useSession } from 'next-auth/react'
+import axios from 'axios'
 
 export const EditingMode: React.FC<EditingModeProps> = ({
   placeholderName,
@@ -29,6 +34,10 @@ export const EditingMode: React.FC<EditingModeProps> = ({
   onCancel,
 }) => {
   const dispatch = useDispatch()
+  const { data: session, status } = useSession()
+  const token = session?.accessToken
+  console.log(token);
+  
   const [mounted, setMounted] = useState(false)
 
   const inputName = useSelector(selectAuthName)
@@ -56,7 +65,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({
     dispatch(setAuthEmailError(validateAuthEmailEditMode(value)))
   }
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     setIsTouched((prev) => ({
       ...prev,
       nameIsToched: true,
@@ -71,11 +80,25 @@ export const EditingMode: React.FC<EditingModeProps> = ({
 
     if (nameErr || emailErr) return
 
-    console.log('Saving..')
+    // const res = await axios.put(
+    //   `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`,
+    //   {
+    //     name: inputName,
+    //     email: inputEmail,
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // )
+    // console.log(res.data)
+
+    // console.log('Saving..')
   }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col animate-fade animate-duration-400">
       <InputField
         label="New name"
         placeholder={placeholderName}
@@ -101,7 +124,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({
             onClick={handleSaveClick}
             className="py-2 px-6 text-sm flex items-center justify-center gap-1 font-semibold rounded-lg transition duration-200 bg-emerald-500 hover:bg-emerald-600 text-white"
           >
-            <ArrowDownToLine size={17}/>
+            <ArrowDownToLine size={17} />
             Save
           </Button>
         </div>

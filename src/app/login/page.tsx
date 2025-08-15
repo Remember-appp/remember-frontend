@@ -44,11 +44,12 @@ function AuthPage() {
     emailIsTouched: false,
     passwordIsTouched: false,
   })
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     dispatch(setAuthError(null))
-  }, [])
+  }, [dispatch])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -72,9 +73,11 @@ function AuthPage() {
       dispatch(setAuthError(res.error))
       toast.error(error)
     }
-
     if (res.ok) {
       toast.success('Successfully authorized')
+
+      setIsLoggedIn(true)
+
       router.push('/profile')
       dispatch(resetAuthForm())
     }
@@ -93,7 +96,10 @@ function AuthPage() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className={`${isLoggedIn && 'animate-jump-out animate-once'}`}
+      >
         <FormSection>
           <InputField
             label="Email"
@@ -124,6 +130,10 @@ function AuthPage() {
             }
             errorText={isTouched.passwordIsTouched ? passwordInputError : ''}
           />
+
+          {mounted && error && (
+            <Error error={String(error)} classNameWrapper="mb-2" />
+          )}
           <Button
             type="submit"
             text={'Sign in'}
@@ -134,7 +144,7 @@ function AuthPage() {
           <Link href="/register">
             <P
               text={"Don't have an account? Sign up"}
-              className="text-blue-400 font-bold cursor-pointer hover:underline"
+              className="text-blue-400 font-bold cursor-pointer hover:underline mt-2"
             />
           </Link>
         </FormSection>

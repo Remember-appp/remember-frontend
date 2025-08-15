@@ -37,15 +37,17 @@ const ProfilePage: React.FC = () => {
           <h2 className="font-black text-xl">
             {isEditing ? 'Editing' : 'Personal info :'}
           </h2>
-          {!isEditing ? (
-            <UserInfoMode onEdit={handleEdit} name={name} email={email} />
-          ) : (
-            <EditingMode
-              onCancel={handleCancel}
-              placeholderName={name}
-              placeholderEmail={email}
-            />
-          )}
+          <div>
+            {!isEditing ? (
+              <UserInfoMode onEdit={handleEdit} name={name} email={email} />
+            ) : (
+              <EditingMode
+                onCancel={handleCancel}
+                placeholderName={name}
+                placeholderEmail={email}
+              />
+            )}
+          </div>
         </ProfileInfo>
       </ProfileCard>
     </div>

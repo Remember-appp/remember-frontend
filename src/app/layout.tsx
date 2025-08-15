@@ -4,6 +4,7 @@ import AppProvider from '@/providers/AppProvider'
 import NavBar from '@/components/NavBar'
 import React from 'react'
 import { RootLayoutProps } from '@/types/appTypes'
+import Sidebar from '@/components/SideBar'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,6 +23,7 @@ export const metadata = {
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+  
   return (
     <html lang="en">
       <body
@@ -29,7 +31,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       >
         <AppProvider>
           <NavBar />
-          {children}
+          <Sidebar />
+          <div className='ml-5'>{children}</div>
         </AppProvider>
       </body>
     </html>
