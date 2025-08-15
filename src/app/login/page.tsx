@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from 'next-auth/react'
 import { LoginIsTouched } from '@/types/authTypes'
 import { selectAuthError, setAuthError } from '@/redux/slices/authSlice'
-import Error from '@/components/Error'
+import { toast } from 'sonner'
 
 function AuthPage() {
   const dispatch = useDispatch()
@@ -71,9 +71,13 @@ function AuthPage() {
     if (!res.ok && res?.error) {
       console.log(res.error)
       dispatch(setAuthError(res.error))
+      toast.error(error)
     }
     if (res.ok) {
+      toast.success('Successfully authorized')
+
       setIsLoggedIn(true)
+
       router.push('/profile')
       dispatch(resetAuthForm())
     }
@@ -126,6 +130,7 @@ function AuthPage() {
             }
             errorText={isTouched.passwordIsTouched ? passwordInputError : ''}
           />
+
           {mounted && error && (
             <Error error={String(error)} classNameWrapper="mb-2" />
           )}
