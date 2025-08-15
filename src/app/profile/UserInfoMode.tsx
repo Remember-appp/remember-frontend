@@ -9,7 +9,7 @@ export const UserInfoMode: React.FC<UserInfoModeProps> = ({
   onEdit,
 }) => {
   return (
-    <>
+    <div className='animate-fade animate-duration-400'>
       <P
         label="Name :"
         text={name || 'Loading...'}
@@ -23,12 +23,12 @@ export const UserInfoMode: React.FC<UserInfoModeProps> = ({
       <div className=" flex justify-start w-full gap-2">
         <Button
           onClick={onEdit}
-          className=" text-sm font-semibold rounded-lg transition duration-200 bg-stone-300 hover:bg-stone-400 text-black flex items-center gap-1.5"
+          className=" text-sm font-semibold rounded-lg transition duration-200 bg-stone-300 hover:bg-stone-400 text-black flex items-center gap-1.5 mt-5 mr-3"
         >
           <UserPen size={17}/>
           <span>Edit</span>
         </Button>
       </div>
-    </>
+    </div>
   )
 }

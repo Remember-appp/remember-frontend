@@ -71,6 +71,7 @@ function RegisterPage() {
     passwordIsTouched: false,
     confirmPasswordIsTouched: false,
   })
+  const [isLoggedUp, setIsLoggedUp] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -114,6 +115,7 @@ function RegisterPage() {
         })
       ).unwrap()
 
+      setIsLoggedUp(true)
       router.push('/login')
     } catch (err) {
       console.log('Registration failed:', err.message)
@@ -143,7 +145,7 @@ function RegisterPage() {
   }
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={`${isLoggedUp && 'animate-fade-left animate-reverse'}`}>
         <FormSection>
           <InputField
             label="Name"
@@ -203,9 +205,9 @@ function RegisterPage() {
                 : ''
             }
           />
-            {mounted && status === 'failed' && errorAuth && (
-              <Error error={String(errorAuth)} classNameWrapper='mb-2'/>
-            )}
+          {mounted && status === 'failed' && errorAuth && (
+            <Error error={String(errorAuth)} classNameWrapper="mb-2" />
+          )}
           <Button
             text={'Sign up'}
             type="submit"
@@ -216,7 +218,7 @@ function RegisterPage() {
           <Link href={'/login'}>
             <P
               text={'Already have an account? Sign in'}
-              className="text-blue-400 font-bold cursor-pointer hover:underline"
+              className="text-blue-400 font-bold cursor-pointer hover:underline mt-2 ml-2"
             />
           </Link>
         </FormSection>
