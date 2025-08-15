@@ -45,8 +45,8 @@ import {
 } from '@/utils/authValidators'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { PayloadActionCreator } from '@reduxjs/toolkit'
-import Error from '@/components/Error'
 import { RegisterIsTouched } from '@/types/authTypes'
+import { toast } from 'sonner'
 
 function RegisterPage() {
   const dispatch = useAppDispatch()
@@ -114,8 +114,10 @@ function RegisterPage() {
         })
       ).unwrap()
 
+      toast.success('Account has been successfully created')
       router.push('/login')
     } catch (err) {
+      toast.error(err.message)
       console.log('Registration failed:', err.message)
     }
   }
@@ -203,9 +205,6 @@ function RegisterPage() {
                 : ''
             }
           />
-            {mounted && status === 'failed' && errorAuth && (
-              <Error error={String(errorAuth)} classNameWrapper='mb-2'/>
-            )}
           <Button
             text={'Sign up'}
             type="submit"
