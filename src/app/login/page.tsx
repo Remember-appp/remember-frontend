@@ -130,10 +130,6 @@ function AuthPage() {
             }
             errorText={isTouched.passwordIsTouched ? passwordInputError : ''}
           />
-
-          {mounted && error && (
-            <Error error={String(error)} classNameWrapper="mb-2" />
-          )}
           <Button
             type="submit"
             text={'Sign in'}
