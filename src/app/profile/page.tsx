@@ -9,6 +9,8 @@ import { EditingMode } from './EditingMode'
 import { UserInfoMode } from './UserInfoMode'
 import { HeaderText } from '@/components/HeaderText'
 import { resetAuthForm } from '@/redux/slices/authFormSlice'
+import { AvatarCreator } from '@/components/AvatarCreator'
+
 
 const ProfilePage: React.FC = () => {
   useUserinfo()
@@ -33,6 +35,7 @@ const ProfilePage: React.FC = () => {
     <div>
       <HeaderText text="My Profile" />
       <ProfileCard>
+        <AvatarCreator name={name} />
         <ProfileInfo>
           <h2 className="font-black text-xl">
             {isEditing ? 'Editing' : 'Personal info :'}
