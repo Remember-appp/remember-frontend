@@ -207,10 +207,6 @@ function RegisterPage() {
                 : ''
             }
           />
-
-          {mounted && status === 'failed' && errorAuth && (
-            <Error error={String(errorAuth)} classNameWrapper="mb-2" />
-          )}
           <Button
             text={'Sign up'}
             type="submit"
