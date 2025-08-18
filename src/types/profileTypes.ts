@@ -14,3 +14,8 @@ export type UserInfoModeProps = {
   email: string | null
   onEdit: () => void
 }
+
+export type EditingModePayload = {
+  name?: string | null
+  email?: string | null
+}

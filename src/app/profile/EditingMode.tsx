@@ -18,6 +18,7 @@ import {
   setAuthNameError,
 } from '@/redux/slices/authValidationSlice'
 import {
+  EditingModePayload,
   EditingModeProps,
   ProfileEditingModeIsTouched,
 } from '@/types/profileTypes'
@@ -27,17 +28,14 @@ import {
 } from '@/utils/authValidators'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
-export const EditingMode: React.FC<EditingModeProps> = ({
-  placeholderName,
-  placeholderEmail,
-  onCancel,
-}) => {
+export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const { data: session, status } = useSession()
-  const token = session?.accessToken
-  console.log(token);
-  
+
   const [mounted, setMounted] = useState(false)
 
   const inputName = useSelector(selectAuthName)
@@ -52,7 +50,9 @@ export const EditingMode: React.FC<EditingModeProps> = ({
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+    dispatch(setAuthName(session.user.name))
+    dispatch(setAuthEmail(session.user.email))
+  }, [session, dispatch])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -80,28 +80,32 @@ export const EditingMode: React.FC<EditingModeProps> = ({
 
     if (nameErr || emailErr) return
 
-    // const res = await axios.put(
-    //   `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`,
-    //   {
-    //     name: inputName,
-    //     email: inputEmail,
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   }
-    // )
-    // console.log(res.data)
+    const payload: Partial<EditingModePayload> = {}
 
-    // console.log('Saving..')
+    if (inputName !== session.user.name) {
+      payload.name = inputName
+    }
+    if (inputEmail !== session.user.email) {
+      payload.email = inputEmail
+    }
+
+    if (Object.keys(payload).length === 0) {
+      toast.warning('No changes to update')
+      return
+    }
+    try {
+      toast.success(
+        `payload.name: ${payload?.name}; payload.email: ${payload?.email}`
+      )
+      onCancel()
+    } catch (error) {}
   }
 
   return (
     <div className="w-full flex flex-col animate-fade animate-duration-400">
       <InputField
         label="New name"
-        placeholder={placeholderName}
+        placeholder="Name"
         value={inputName}
         onChange={handleNameChange}
         onBlur={() => setIsTouched((prev) => ({ ...prev, nameIsToched: true }))}
@@ -109,7 +113,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({
       />
       <InputField
         label="New email"
-        placeholder={placeholderEmail}
+        placeholder="Email"
         value={inputEmail}
         onChange={handleEmailChange}
         onBlur={() =>

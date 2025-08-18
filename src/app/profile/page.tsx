@@ -46,8 +46,6 @@ const ProfilePage: React.FC = () => {
             ) : (
               <EditingMode
                 onCancel={handleCancel}
-                placeholderName={name}
-                placeholderEmail={email}
               />
             )}
           </div>
