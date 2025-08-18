@@ -65,7 +65,8 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
     dispatch(setAuthEmailError(validateAuthEmailEditMode(value)))
   }
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setIsTouched((prev) => ({
       ...prev,
       nameIsToched: true,
@@ -94,6 +95,8 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
       return
     }
     try {
+      // const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`, payload)
+      // const data = res.data
       toast.success(
         `payload.name: ${payload?.name}; payload.email: ${payload?.email}`
       )
@@ -102,7 +105,10 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   }
 
   return (
-    <div className="w-full flex flex-col animate-fade animate-duration-400">
+    <form
+      onSubmit={handleSaveClick}
+      className="w-full flex flex-col animate-fade animate-duration-400"
+    >
       <InputField
         label="New name"
         placeholder="Name"
@@ -125,7 +131,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
       <div className="pt-2 flex justify-start w-full gap-2">
         <div>
           <Button
-            onClick={handleSaveClick}
+            type="submit"
             className="py-2 px-6 text-sm flex items-center justify-center gap-1 font-semibold rounded-lg transition duration-200 bg-emerald-500 hover:bg-emerald-600 text-white"
           >
             <ArrowDownToLine size={17} />
@@ -134,12 +140,13 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
         </div>
 
         <Button
+          type="button"
           onClick={onCancel}
           className="py-2 px-6 text-sm font-semibold rounded-lg transition duration-200 bg-stone-200 hover:bg-stone-300"
         >
           Cancel
         </Button>
       </div>
-    </div>
+    </form>
   )
 }
