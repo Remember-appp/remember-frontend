@@ -34,7 +34,7 @@ import { useRouter } from 'next/navigation'
 export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
 
   const [mounted, setMounted] = useState(false)
 
@@ -95,13 +95,24 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
       return
     }
     try {
-      // const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`, payload)
-      // const data = res.data
+      const res = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`,
+        payload
+      )
+      const data = res.data
+      await update({
+        ...session,
+        user: data.user,
+        accessToken: data.accessToken,
+      })
       toast.success(
         `payload.name: ${payload?.name}; payload.email: ${payload?.email}`
       )
       onCancel()
-    } catch (error) {}
+    } catch (error) {
+      toast.error('Something went wrong')
+      return
+    }
   }
 
   return (
