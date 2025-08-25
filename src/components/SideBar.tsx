@@ -25,17 +25,15 @@ export default function Sidebar() {
       {/* Мобильная кнопка */}
       {!mobileOpen && (
         <button
-          className="md:hidden fixed z-10 p-2 m-2 bg-gray-800 text-white rounded animate-fade"
+          className="md:hidden fixed z-10 p-2 rounded-r-xl -left-1 bg-emerald-800 text-white animate-fade"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <Menu />
         </button>
       )}
 
-      {/* Десктопный сайдбар с ховером */}
       <div className="hidden md:flex fixed z-10 top-0 left-0 h-full flex-col bg-emerald-900 text-white group animate-fade">
         <div className="flex flex-col h-full transition-all duration-300 w-16 group-hover:w-64 overflow-hidden">
-          {/* Заголовок */}
           <div className="p-4 font-bold border-b border-gray-700 flex items-center">
             <Menu className="flex-shrink-0" />
             <span className="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
@@ -43,7 +41,6 @@ export default function Sidebar() {
             </span>
           </div>
 
-          {/* Пункты меню */}
           <ul className="mt-4 flex flex-col flex-1">
             <li>
               <Link
