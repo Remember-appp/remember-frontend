@@ -49,7 +49,7 @@ export const UserInfoMode: React.FC<UserInfoModeProps> = ({
           <UserPen size={17} />
           <span>Edit</span>
         </Button>
-      </div>
+      </div> 
     </div>
   )
 }
