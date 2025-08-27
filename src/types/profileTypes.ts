@@ -15,11 +15,13 @@ export type UserInfoModeProps = {
   name: string | null
   email: string | null
   bio: string | null
-  birth: string | null
+  birth: string | Date| null
   phrases: object[] | string | null
   onEdit: () => void
 }
 
 export type EditingModePayload = {
   display_name?: string | null
+  bio?: string | number | Date | null
+  birth_date?: Date | null
 }

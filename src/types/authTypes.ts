@@ -3,7 +3,7 @@ export type authFormState = {
   email: string
   password: string
   confirmPassword: string
-  bio: string
+  bio: string 
   birth: string
   favoritePhrases: string
 }
@@ -36,7 +36,7 @@ export type UserInfoState = {
     display_name: string | null
     bio: string | null
     photo_asset_id: string | number | null
-    birth_date: string | null
+    birth_date:  Date | null
     favorite_phrases: object[] | null
   }
 }

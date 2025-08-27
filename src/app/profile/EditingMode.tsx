@@ -2,8 +2,12 @@
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { DayPicker } from 'react-day-picker'
+import { Button } from '@/components/ui/button'
 import { ArrowDownToLine } from 'lucide-react'
-import Button from '@/components/Button'
 import InputField from '@/components/InputField'
 import {
   selectAuthName,
@@ -23,11 +27,13 @@ import {
   ProfileEditingModeIsTouched,
 } from '@/types/profileTypes'
 import { validateAuthNameEditMode } from '@/utils/authValidators'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import axios from 'axios'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { DatePickerInput } from '@mantine/dates'
+import {
+  selectUserInfo,
+  setProfileUserInfo,
+} from '@/redux/slices/userInfoSlice'
+import { format } from 'date-fns'
 
 export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const dispatch = useDispatch()
@@ -41,6 +47,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const inputBirth = useSelector(selectBirth)
   const inputPhrases = useSelector(selectFavoritePhrases)
   const inputNameError = useSelector(selectAuthNameError)
+  const { profileInfo } = useSelector(selectUserInfo)
 
   const [isTouched, setIsTouched] = useState<ProfileEditingModeIsTouched>({
     nameIsToched: false,
@@ -48,18 +55,23 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
     birthIsTouched: false,
     favoritePhrasesIsTouched: false,
   })
-  const [value, setValue] = useState<string | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Date>()
 
   useEffect(() => {
     setMounted(true)
-    dispatch(setAuthName(session.user.name))
-    dispatch(setBio())
+    dispatch(setAuthName(profileInfo.display_name))
+    dispatch(setBio(profileInfo.bio))
+    setSelectedDate(profileInfo.birth_date)
   }, [session, dispatch])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     dispatch(setAuthName(value))
     dispatch(setAuthNameError(validateAuthNameEditMode(value)))
+  }
+  const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    dispatch(setBio(value))
   }
 
   const handleSaveClick = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,8 +90,15 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
 
     const payload: Partial<EditingModePayload> = {}
 
-    if (inputName !== session.user.name) {
+
+    if (inputName !== profileInfo.display_name) {
       payload.display_name = inputName
+    }
+    if (inputBio !== profileInfo.bio) {
+      payload.bio = inputBio
+    }
+    if (selectedDate !== profileInfo.birth_date) {
+      payload.birth_date = selectedDate
     }
 
     if (Object.keys(payload).length === 0) {
@@ -93,7 +112,14 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
         { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       )
 
-      const data = res.data
+      const profileRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/api/me/profile`,
+        { headers: { Authorization: `Bearer ${session?.accessToken}` } }
+      )
+
+      const data = profileRes.data
+
+      dispatch(setProfileUserInfo(data.profile))
 
       toast.success('saved to backend')
       onCancel()
@@ -104,54 +130,86 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   }
 
   return (
-    <form
-      onSubmit={handleSaveClick}
-      className="w-full flex flex-col animate-fade animate-duration-400"
-    >
-      <InputField
-        label="New name"
-        placeholder="Name"
-        value={inputName}
-        onChange={handleNameChange}
-        onBlur={() => setIsTouched((prev) => ({ ...prev, nameIsToched: true }))}
-        errorText={isTouched.nameIsToched ? inputNameError : null}
-      />
-      <DatePickerInput
-        label="New birthday"
-        placeholder="Pick your birthday"
-        value={value}
-        onChange={setValue}
-        styles={{
-          label: {
-            color: 'rgb(4, 148, 90)',
-            fontWeight: '500',
-          },
-          input: {
-            border: '1px solid #6ee7b7',
-            borderRadius: '3px',
-            backgroundColor: '#f5f5f4',
-          },
-        }}
-      />
-      <div className="pt-2 flex justify-start w-full gap-2">
-        <div>
-          <Button
-            type="submit"
-            className="py-2 px-6 text-sm flex items-center justify-center gap-1 font-semibold rounded-lg transition duration-200 bg-emerald-500 hover:bg-emerald-600 text-white"
+    <div>
+      <Tabs defaultValue="account" className="w-[400px]">
+        <TabsList>
+          <TabsTrigger value="account">Info</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <form
+            onSubmit={handleSaveClick}
+            className="w-full flex flex-col animate-fade animate-duration-400"
           >
-            <ArrowDownToLine size={17} />
-            Save
-          </Button>
-        </div>
-
-        <Button
-          type="button"
-          onClick={onCancel}
-          className="py-2 px-6 text-sm font-semibold rounded-lg transition duration-200 bg-stone-200 hover:bg-stone-300"
-        >
-          Cancel
-        </Button>
-      </div>
-    </form>
+            <InputField
+              label="New name"
+              placeholder="Name"
+              value={inputName}
+              onChange={handleNameChange}
+              onBlur={() =>
+                setIsTouched((prev) => ({ ...prev, nameIsToched: true }))
+              }
+              errorText={isTouched.nameIsToched ? inputNameError : null}
+            />
+            <InputField
+              label="New bio"
+              placeholder="Bio"
+              value={inputBio}
+              onChange={handleBioChange}
+              onBlur={() =>
+                setIsTouched((prev) => ({ ...prev, bioIsTouched: true }))
+              }
+            />
+            <div className="border-y-1 p-2 border-emerald-300 pl-2 rounded">
+              <DayPicker
+                animate
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                captionLayout="dropdown"
+                ISOWeek
+                mode="single"
+                navLayout="after"
+                reverseYears
+                timeZone="UTC"
+                footer={
+                  selectedDate
+                    ? `Selected: ${format(selectedDate, 'dd/MM/yyyy')}` // формат через date-fns
+                    : 'Pick a day.'
+                }
+                style={
+                  {
+                    '--rdp-accent-color': 'rgb(66, 194, 7)',
+                    '--rdp-accent-background-color': '#ad0c0c',
+                    '--rdp-background-color': '#ffebee',
+                    '--rdp-cell-size': '36px',
+                    '--rdp-outline': '2px solid #51ff00',
+                    '--rdp-outline-selected': '2px solid #51ff00',
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+            <div className="mt-6 flex justify-start w-full gap-2">
+              <div>
+                <Button
+                  type="submit"
+                  className="py-2 px-6 text-sm flex items-center justify-center gap-1 font-semibold rounded-lg transition duration-200 bg-emerald-500 hover:bg-emerald-600 text-white"
+                >
+                  <ArrowDownToLine size={17} />
+                  Save
+                </Button>
+              </div>
+              <Button
+                type="button"
+                onClick={onCancel}
+                className="py-2 px-6 text-sm text-black font-semibold rounded-lg transition duration-200 bg-stone-300 hover:bg-stone-400"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </TabsContent>
+        <TabsContent value="password">Changge password here</TabsContent>
+      </Tabs>
+    </div>
   )
 }

@@ -15,7 +15,7 @@ export type PasswordInputProps = {
 
 export type PProps = {
   children?: React.ReactNode
-  text?: string
+  text?: string | Date | object[]
   label?: string
   className?: string
   classNameText?: string

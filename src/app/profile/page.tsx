@@ -18,11 +18,13 @@ import { AvatarCreator } from '@/components/AvatarCreator'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import { format } from 'date-fns'
 
 const ProfilePage: React.FC = () => {
   useUserinfo()
 
   const { data: session } = useSession()
+  const [mounted, setMounted] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -30,6 +32,10 @@ const ProfilePage: React.FC = () => {
   const { profileInfo } = useSelector(selectUserInfo)
 
   const [isEditing, setIsEditing] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleEdit = () => {
     setIsEditing(!isEditing)
@@ -41,7 +47,7 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='ml-0 sm:ml-10'>
       <HeaderText text="My Profile" />
       <ProfileCard>
         <AvatarCreator name={mainInfo.name} />
@@ -50,18 +56,17 @@ const ProfilePage: React.FC = () => {
             {isEditing ? 'Editing' : 'Personal info :'}
           </h2>
           <div>
-            {!isEditing ? (
+            {mounted && !isEditing && (
               <UserInfoMode
                 onEdit={handleEdit}
-                name={mainInfo.name || profileInfo.display_name}
+                name={profileInfo.display_name}
                 email={mainInfo.email}
                 bio={profileInfo.bio}
-                birth={profileInfo.birth_date}
+                birth={format(profileInfo.birth_date, 'dd/MM/yyyy')}
                 phrases={profileInfo.favorite_phrases}
               />
-            ) : (
-              <EditingMode onCancel={handleCancel} />
             )}
+            {isEditing && <EditingMode onCancel={handleCancel} />}
           </div>
         </ProfileInfo>
       </ProfileCard>
