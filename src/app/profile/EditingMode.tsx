@@ -6,15 +6,15 @@ import { ArrowDownToLine } from 'lucide-react'
 import Button from '@/components/Button'
 import InputField from '@/components/InputField'
 import {
-  selectAuthEmail,
   selectAuthName,
-  setAuthEmail,
+  selectBio,
+  selectBirth,
+  selectFavoritePhrases,
   setAuthName,
+  setBio,
 } from '@/redux/slices/authFormSlice'
 import {
-  selectAuthEmailError,
   selectAuthNameError,
-  setAuthEmailError,
   setAuthNameError,
 } from '@/redux/slices/authValidationSlice'
 import {
@@ -22,14 +22,12 @@ import {
   EditingModeProps,
   ProfileEditingModeIsTouched,
 } from '@/types/profileTypes'
-import {
-  validateAuthEmailEditMode,
-  validateAuthNameEditMode,
-} from '@/utils/authValidators'
-import { useSession } from 'next-auth/react'
+import { validateAuthNameEditMode } from '@/utils/authValidators'
+import { getSession, useSession } from 'next-auth/react'
 import axios from 'axios'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { DatePickerInput } from '@mantine/dates'
 
 export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const dispatch = useDispatch()
@@ -39,30 +37,29 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
   const [mounted, setMounted] = useState(false)
 
   const inputName = useSelector(selectAuthName)
-  const inputEmail = useSelector(selectAuthEmail)
+  const inputBio = useSelector(selectBio)
+  const inputBirth = useSelector(selectBirth)
+  const inputPhrases = useSelector(selectFavoritePhrases)
   const inputNameError = useSelector(selectAuthNameError)
-  const inputEmailError = useSelector(selectAuthEmailError)
 
   const [isTouched, setIsTouched] = useState<ProfileEditingModeIsTouched>({
     nameIsToched: false,
-    emailIsTouched: false,
+    bioIsTouched: false,
+    birthIsTouched: false,
+    favoritePhrasesIsTouched: false,
   })
+  const [value, setValue] = useState<string | null>(null)
 
   useEffect(() => {
     setMounted(true)
     dispatch(setAuthName(session.user.name))
-    dispatch(setAuthEmail(session.user.email))
+    dispatch(setBio())
   }, [session, dispatch])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     dispatch(setAuthName(value))
     dispatch(setAuthNameError(validateAuthNameEditMode(value)))
-  }
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    dispatch(setAuthEmail(value))
-    dispatch(setAuthEmailError(validateAuthEmailEditMode(value)))
   }
 
   const handleSaveClick = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,20 +71,15 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
     }))
 
     const nameErr = validateAuthNameEditMode(inputName)
-    const emailErr = validateAuthEmailEditMode(inputEmail)
 
     dispatch(setAuthNameError(nameErr))
-    dispatch(setAuthEmailError(emailErr))
 
-    if (nameErr || emailErr) return
+    if (nameErr) return
 
     const payload: Partial<EditingModePayload> = {}
 
     if (inputName !== session.user.name) {
-      payload.name = inputName
-    }
-    if (inputEmail !== session.user.email) {
-      payload.email = inputEmail
+      payload.display_name = inputName
     }
 
     if (Object.keys(payload).length === 0) {
@@ -95,19 +87,15 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
       return
     }
     try {
-      const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/settings/profile`,
-        payload
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BACKEND_URL}/api/me/profile`,
+        payload,
+        { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       )
+
       const data = res.data
-      await update({
-        ...session,
-        user: data.user,
-        accessToken: data.accessToken,
-      })
-      toast.success(
-        `payload.name: ${payload?.name}; payload.email: ${payload?.email}`
-      )
+
+      toast.success('saved to backend')
       onCancel()
     } catch (error) {
       toast.error('Something went wrong')
@@ -128,17 +116,23 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
         onBlur={() => setIsTouched((prev) => ({ ...prev, nameIsToched: true }))}
         errorText={isTouched.nameIsToched ? inputNameError : null}
       />
-      <InputField
-        label="New email"
-        placeholder="Email"
-        value={inputEmail}
-        onChange={handleEmailChange}
-        onBlur={() =>
-          setIsTouched((prev) => ({ ...prev, emailIsTouched: true }))
-        }
-        errorText={isTouched.emailIsTouched ? inputEmailError : null}
+      <DatePickerInput
+        label="New birthday"
+        placeholder="Pick your birthday"
+        value={value}
+        onChange={setValue}
+        styles={{
+          label: {
+            color: 'rgb(4, 148, 90)',
+            fontWeight: '500',
+          },
+          input: {
+            border: '1px solid #6ee7b7',
+            borderRadius: '3px',
+            backgroundColor: '#f5f5f4',
+          },
+        }}
       />
-
       <div className="pt-2 flex justify-start w-full gap-2">
         <div>
           <Button
