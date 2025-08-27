@@ -8,6 +8,9 @@ const initialState: authFormState = {
   email: '',
   password: '',
   confirmPassword: '',
+  bio: '',
+  birth: '',
+  favoritePhrases: '',
 }
 
 const authFormSlice = createSlice({
@@ -26,6 +29,15 @@ const authFormSlice = createSlice({
     setAuthConfirmPassword(state, action: PayloadAction<string>) {
       state.confirmPassword = action.payload
     },
+    setBio(state, action: PayloadAction<string>) {
+      state.bio = action.payload
+    },
+    setBirth(state, action: PayloadAction<string>) {
+      state.birth = action.payload
+    },
+    setFavoritePhrases(state, action: PayloadAction<string>) {
+      state.favoritePhrases = action.payload
+    },
     resetAuthForm() {
       return initialState
     },
@@ -37,6 +49,9 @@ export const {
   setAuthEmail,
   setAuthPassword,
   setAuthConfirmPassword,
+  setBio,
+  setBirth,
+  setFavoritePhrases,
   resetAuthForm,
 } = authFormSlice.actions
 
@@ -45,5 +60,9 @@ export const selectAuthEmail = (state: RootState) => state.authForm.email
 export const selectAuthPassword = (state: RootState) => state.authForm.password
 export const selectAuthConfirmPassword = (state: RootState) =>
   state.authForm.confirmPassword
+export const selectBio = (state: RootState) => state.authForm.bio
+export const selectBirth = (state: RootState) => state.authForm.birth
+export const selectFavoritePhrases = (state: RootState) =>
+  state.authForm.favoritePhrases
 
 export default authFormSlice.reducer

@@ -34,6 +34,7 @@ export type InputFieldProps = {
   type?: string
   errorText?: string | null
   errorTextAllowed?: boolean
+  disabled?: boolean
 }
 
 export type FormSectionProps = {

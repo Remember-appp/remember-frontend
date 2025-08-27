@@ -1,9 +1,11 @@
-
 export type authFormState = {
   name: string
   email: string
   password: string
   confirmPassword: string
+  bio: string
+  birth: string
+  favoritePhrases: string
 }
 
 export type authState = {
@@ -19,14 +21,24 @@ export type authValidationState = {
 }
 
 export type UserInfoState = {
-  id: number | null
-  name: string | null
-  email: string | null
-  email_verified_at: string | null
-  created_at: string | null
-  updated_at: string | null
-  loaded: boolean
-  token: null
+  mainInfo: {
+    id: number | null
+    name: string | null
+    email: string | null
+    email_verified_at: string | null
+    created_at: string | null
+    updated_at: string | null
+    loaded: boolean
+    token: null
+  }
+  profileInfo: {
+    user_id: string | null
+    display_name: string | null
+    bio: string | null
+    photo_asset_id: string | number | null
+    birth_date: string | null
+    favorite_phrases: object[] | null
+  }
 }
 
 export type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -63,4 +75,3 @@ export type LoginIsTouched = {
   emailIsTouched: boolean
   passwordIsTouched: boolean
 }
-

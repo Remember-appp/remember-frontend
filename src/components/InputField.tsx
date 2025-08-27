@@ -14,6 +14,8 @@ const InputField: React.FC<InputFieldProps> = ({
   type = 'text',
   errorText = '',
   errorTextAllowed = true,
+  disabled = false
+
 }) => {
   const defaultInputClasses =
     'border border-emerald-300 focus:border-emerald-500 focus:scale-[1.02] transition-all duration-200 outline-none px-4 py-2 rounded'
@@ -32,6 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
         className={clsx(defaultInputClasses, classNameInput)}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
       {errorTextAllowed && (
         <div className="min-h-[1rem]">
