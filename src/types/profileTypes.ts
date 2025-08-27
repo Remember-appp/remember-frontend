@@ -1,6 +1,8 @@
 export type ProfileEditingModeIsTouched = {
   nameIsToched: boolean
-  emailIsTouched: boolean
+  bioIsTouched: boolean
+  birthIsTouched: boolean
+  favoritePhrasesIsTouched: boolean
 }
 
 export type EditingModeProps = {
@@ -12,5 +14,12 @@ export type EditingModeProps = {
 export type UserInfoModeProps = {
   name: string | null
   email: string | null
+  bio: string | null
+  birth: string | null
+  phrases: object[] | string | null
   onEdit: () => void
+}
+
+export type EditingModePayload = {
+  display_name?: string | null
 }

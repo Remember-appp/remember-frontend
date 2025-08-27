@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import AppProvider from '@/providers/AppProvider'
 import NavBar from '@/components/NavBar'
 import React from 'react'
