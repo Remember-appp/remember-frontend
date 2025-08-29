@@ -23,8 +23,6 @@ export const useUserinfo = () => {
       const data = res.data
       console.log(data?.profile?.display_name)
       dispatch(setProfileUserInfo(data.profile))
-      const updatedProfile = { ...profileInfo, ...data.profile }
-      console.log(updatedProfile.name)
       toast.success('Good')
     } catch (error) {
       toast.error('Error loading profile')

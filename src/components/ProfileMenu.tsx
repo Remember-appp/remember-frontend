@@ -110,11 +110,13 @@ export default function ProfileMenu() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Other staff</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/">
-                    <div className="flex items-center gap-3">
-                      <P text="Dashboard" classNameText="font-[500]" />
-                      <LayoutDashboard />
-                    </div>
+                  <NavigationMenuLink asChild>
+                    <Link href={'/'}>
+                      <div className="flex items-center gap-3">
+                        <P text="Dashboard" classNameText="font-[500]" />
+                        <LayoutDashboard />
+                      </div>
+                    </Link>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -125,11 +127,13 @@ export default function ProfileMenu() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>My account</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/profile">
-                    <div className="flex items-center gap-3">
-                      <P text="Profile" classNameText="font-[500]" />
-                      <User />
-                    </div>
+                  <NavigationMenuLink asChild>
+                    <Link href={'/profile'}>
+                      <div className="flex items-center gap-3">
+                        <P text="Profile" classNameText="font-[500]" />
+                        <User />
+                      </div>
+                    </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink href="/settings">
                     <div className="flex items-center gap-3">
@@ -143,9 +147,9 @@ export default function ProfileMenu() {
           </NavigationMenu>
           <AlertDialog>
             <AlertDialogTrigger>
-              <Button variant="outline">
-                <LogOut className="text-red-400" />
-              </Button>
+              <div className="p-2 bg-stone-50 shadow-[0_0px_20px_rgba(0,0,0,0.2)] rounded">
+                <LogOut size={16} className="text-red-400" />
+              </div>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

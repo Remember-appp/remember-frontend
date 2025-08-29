@@ -2,6 +2,7 @@ import { UserPen } from 'lucide-react'
 import Button from '@/components/Button'
 import P from '@/components/P'
 import { UserInfoModeProps } from '@/types/profileTypes'
+import { useSession } from 'next-auth/react'
 
 export const UserInfoMode: React.FC<UserInfoModeProps> = ({
   name,
@@ -11,11 +12,13 @@ export const UserInfoMode: React.FC<UserInfoModeProps> = ({
   phrases,
   onEdit,
 }) => {
+  const { data: session, status } = useSession()
+  
   return (
     <div className="animate-fade animate-duration-400">
       <P
         label="Name :"
-        text={name || 'Loading...'}
+        text={name || session?.user?.name || 'Loading...'}
         classNameLabel="text-emerald-600"
       />
       <P
@@ -46,7 +49,7 @@ export const UserInfoMode: React.FC<UserInfoModeProps> = ({
           <UserPen size={17} />
           <span>Edit</span>
         </Button>
-      </div>
+      </div> 
     </div>
   )
 }

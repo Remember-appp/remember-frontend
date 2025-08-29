@@ -8,6 +8,15 @@
   --foreground: #171717;
 }
 
+.birthdayPicker {
+  --rdp-accent-color: #000000;
+  --rdp-accent-background-color: #ad0c0c;
+  --rdp-background-color: rgb(223, 0, 0);
+  --rdp-cell-size: 36px;
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 2px solid var(--rdp-accent-color);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -81,6 +90,7 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+  
 }
 
 .dark {
@@ -115,7 +125,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+  
 }
+
 
 @layer base {
   * {
@@ -125,3 +137,4 @@
     @apply bg-background text-foreground;
   }
 }
+
