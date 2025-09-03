@@ -25,14 +25,14 @@ export default function Sidebar() {
       {/* Мобильная кнопка */}
       {!mobileOpen && (
         <button
-          className="md:hidden fixed z-10 p-2 rounded-r-xl -left-1 bg-emerald-800 text-white animate-fade"
+          className="sm:hidden fixed z-10 p-2 rounded-r-xl -left-1 bg-emerald-800 text-white animate-fade"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <Menu />
         </button>
       )}
 
-      <div className="hidden md:flex fixed z-10 top-0 left-0 h-full flex-col bg-emerald-900 text-white group animate-fade">
+      <div className="hidden sm:flex fixed z-10 top-0 left-0 h-full flex-col bg-emerald-900 text-white group animate-fade">
         <div className="flex flex-col h-full transition-all duration-300 w-16 group-hover:w-64 overflow-hidden">
           <div className="p-4 font-bold border-b border-gray-700 flex items-center">
             <Menu className="flex-shrink-0" />
