@@ -83,7 +83,7 @@ function Settings() {
   }
 
   return (
-    <div className="ml-0 sm:ml-10 flex w-full flex-col justify-center">
+    <div className="ml-0 sm:ml-10 ml-7 flex w-full flex-col justify-center">
       <HeaderText text="Settings" />
       <ProfileCard>
         <form className="w-full" onSubmit={handleSave}>
