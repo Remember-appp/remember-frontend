@@ -59,7 +59,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
 
   useEffect(() => {
     setMounted(true)
-    dispatch(setAuthName(profileInfo.display_name))
+    dispatch(setAuthName(profileInfo.display_name || session.user.name))
     dispatch(setBio(profileInfo.bio))
     setSelectedDate(profileInfo.birth_date)
   }, [session, dispatch])
@@ -79,7 +79,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
     setIsTouched((prev) => ({
       ...prev,
       nameIsToched: true,
-      emailIsTouched: true,
+      bioIsTouched: true,
     }))
 
     const nameErr = validateAuthNameEditMode(inputName)
@@ -90,8 +90,10 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
 
     const payload: Partial<EditingModePayload> = {}
 
-
-    if (inputName !== profileInfo.display_name) {
+    if (
+      inputName !== profileInfo.display_name &&
+      inputName !== session.user.name
+    ) {
       payload.display_name = inputName
     }
     if (inputBio !== profileInfo.bio) {
@@ -144,7 +146,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
             <InputField
               label="New name"
               placeholder="Name"
-              value={inputName}
+              value={inputName || ''}
               onChange={handleNameChange}
               onBlur={() =>
                 setIsTouched((prev) => ({ ...prev, nameIsToched: true }))
@@ -154,7 +156,7 @@ export const EditingMode: React.FC<EditingModeProps> = ({ onCancel }) => {
             <InputField
               label="New bio"
               placeholder="Bio"
-              value={inputBio}
+              value={inputBio || ''}
               onChange={handleBioChange}
               onBlur={() =>
                 setIsTouched((prev) => ({ ...prev, bioIsTouched: true }))

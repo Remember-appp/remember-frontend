@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
-      className={`flex ${isAuthenticated && 'flex-row gap-20'} ${isAnauthenticated && 'flex-col sm:flex-row'} items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)] animate-fade-down animate-once animate-duration-300`}
+      className={`flex relative left-10 ${isAuthenticated && 'flex-row gap-20'} ${isAnauthenticated && 'flex-col sm:flex-row'} items-center justify-center sm:justify-between gap-4 sm:gap-0 px-6 py-4 bg-green-50 drop-shadow-[0_1px_30px_rgba(120,120,80,0.3)] animate-fade-down animate-once animate-duration-300`}
     >
       <Link href={appLink}>
         <div className="flex space-x-2 items-center transition duration-300">

@@ -108,23 +108,6 @@ export default function ProfileMenu() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Other staff</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink asChild>
-                    <Link href={'/'}>
-                      <div className="flex items-center gap-3">
-                        <P text="Dashboard" classNameText="font-[500]" />
-                        <LayoutDashboard />
-                      </div>
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
                 <NavigationMenuTrigger>My account</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <NavigationMenuLink asChild>
@@ -135,11 +118,13 @@ export default function ProfileMenu() {
                       </div>
                     </Link>
                   </NavigationMenuLink>
-                  <NavigationMenuLink href="/settings">
-                    <div className="flex items-center gap-3">
-                      <P text="Settings" classNameText="font-[500]" />
-                      <Settings />
-                    </div>
+                  <NavigationMenuLink asChild>
+                    <Link href={'/settings'}>
+                      <div className="flex items-center gap-3">
+                        <P text="Settings" classNameText="font-[500]" />
+                        <Settings />
+                      </div>
+                    </Link>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>

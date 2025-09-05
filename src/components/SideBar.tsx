@@ -22,17 +22,16 @@ export default function Sidebar() {
 
   return (
     <div className="z-9 flex">
-      {/* Мобильная кнопка */}
       {!mobileOpen && (
         <button
-          className="sm:hidden fixed z-10 p-2 rounded-r-xl -left-1 bg-emerald-800 text-white animate-fade"
+          className="md:hidden fixed z-10 p-2 rounded-r-xl -left-1 bg-emerald-800 text-white animate-fade"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <Menu />
         </button>
       )}
 
-      <div className="hidden sm:flex fixed z-10 top-0 left-0 h-full flex-col bg-emerald-900 text-white group animate-fade">
+      <div className="hidden md:flex fixed z-10 top-0 left-0 h-full flex-col bg-emerald-900 text-white group animate-fade">
         <div className="flex flex-col h-full transition-all duration-300 w-16 group-hover:w-64 overflow-hidden">
           <div className="p-4 font-bold border-b border-gray-700 flex items-center">
             <Menu className="flex-shrink-0" />
@@ -68,7 +67,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Мобильный сайдбар */}
       <div
         className={`
     md:hidden flex flex-col fixed z-10 top-0 left-0 h-full bg-emerald-900 text-white
@@ -77,7 +75,6 @@ export default function Sidebar() {
     w-64
   `}
       >
-        {/* Заголовок */}
         <div className="flex w-full border-b border-white-800 p-3 items-center justify-between">
           <p className="font-bold">Menu</p>
           {mobileOpen && (
@@ -90,7 +87,6 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Пункты меню */}
         <div className="mt-4 flex flex-col flex-1">
           <Link
             href="/"
