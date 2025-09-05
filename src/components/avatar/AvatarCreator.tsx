@@ -5,7 +5,7 @@ import { avatarClothRandomizer } from '@/utils/avatar/avatarClothingRandom'
 import { avatarColorRandomizer } from '@/utils/avatar/avatarColorRandomizer'
 import { random } from '@/utils/random'
 import { useEffect, useState } from 'react'
-import Button from './Button'
+import Button from '../Button'
 
 type AvatarCreatorProps = {
   name: string | number | null

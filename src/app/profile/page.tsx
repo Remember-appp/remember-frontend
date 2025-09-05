@@ -14,11 +14,12 @@ import { EditingMode } from './EditingMode'
 import { UserInfoMode } from './UserInfoMode'
 import { HeaderText } from '@/components/HeaderText'
 import { resetAuthForm, selectBio } from '@/redux/slices/authFormSlice'
-import { AvatarCreator } from '@/components/AvatarCreator'
+import { AvatarCreator } from '@/components/avatar/AvatarCreator'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
+import AvatarUpload from '@/components/avatar/UploadAvatar'
 
 const ProfilePage: React.FC = () => {
   useUserinfo()
@@ -50,7 +51,10 @@ const ProfilePage: React.FC = () => {
     <div className='ml-0 sm:ml-10'>
       <HeaderText text="My Profile" />
       <ProfileCard>
-        <AvatarCreator name={mainInfo.name} />
+        <div className='flex flex-col'>
+          <AvatarCreator name={mainInfo.name} />
+          <AvatarUpload />
+        </div>
         <ProfileInfo>
           <h2 className="font-black text-xl">
             {isEditing ? 'Editing' : 'Personal info :'}
