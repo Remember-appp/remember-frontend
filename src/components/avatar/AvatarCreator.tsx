@@ -5,7 +5,7 @@ import { avatarClothRandomizer } from '@/utils/avatar/avatarClothingRandom'
 import { avatarColorRandomizer } from '@/utils/avatar/avatarColorRandomizer'
 import { random } from '@/utils/random'
 import { useEffect, useState } from 'react'
-import Button from './Button'
+import Button from '../Button'
 
 type AvatarCreatorProps = {
   name: string | number | null
@@ -36,11 +36,6 @@ export const AvatarCreator: React.FC<AvatarCreatorProps> = ({ name }) => {
             src={url}
             alt="Not found"
             className="rounded"
-          />
-          <Button
-            onClick={regenerate}
-            text="Get new"
-            className='bg-emerald-300'
           />
         </div>
       )}
