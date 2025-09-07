@@ -37,11 +37,6 @@ export const AvatarCreator: React.FC<AvatarCreatorProps> = ({ name }) => {
             alt="Not found"
             className="rounded"
           />
-          <Button
-            onClick={regenerate}
-            text="Get new"
-            className='bg-emerald-300'
-          />
         </div>
       )}
     </div>
